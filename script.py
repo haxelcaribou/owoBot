@@ -21,9 +21,10 @@ async def on_message(message):
 
     channel = message.channel
 
-    message_content = message.content.lower()
+    message_content = message.clean_content.lower()
 
-    if message_content .startswith(tuple(owo_strings)):
+    # TODO: ignore pings and urls
+    if message_content.startswith(tuple(owo_strings)) and len(message.embeds) == 0:
         messages = await channel.history(limit=2).flatten()
         p_message = messages[1].content
         await channel.send(owo.owo(p_message))
