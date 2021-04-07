@@ -16,9 +16,7 @@ ping_regex = re.compile(r"@(?=\S)")
 def parse_message(message):
     output = ""
     parts = url_regex.split(message)
-    print(parts)
     for i in range(len(parts)):
-        print(i, " : ", parts[i])
         if i % 2 == 1:
             output += parts[i]
         else:
