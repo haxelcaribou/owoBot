@@ -12,7 +12,7 @@ owo_strings = ("owo", "uwu", "^w^", "0w0", "vwv")
 
 url_regex = re.compile(r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)")
 ping_regex = re.compile(r"@&?(?=\S)")
-channel_regex =  = re.compile(r"#(?=\S)")
+channel_regex = re.compile(r"#(?=\S)")
 
 def parse_message(message):
     output = ""
