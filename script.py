@@ -11,7 +11,8 @@ TOKEN = secrets.token
 owo_strings = ("owo", "uwu", "^w^", "0w0", "vwv")
 
 url_regex = re.compile(r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)")
-ping_regex = re.compile(r"(\<[@#]&?\d+\>)")
+ping_regex = re.compile(r"@&?(?=\S)")
+channel_regex =  = re.compile(r"#(?=\S)")
 
 def parse_message(message):
     output = ""
@@ -21,21 +22,8 @@ def parse_message(message):
             output += parts[i]
         else:
             output += owo.substitute(parts[i])
-    output = ping_regex.sub("@", output) # TODO: Display role/user/channel name
-    # output = ""
-    # for i in range(len(parts)):
-    #     part = parts[i]
-    #     if i % 2 == 1:
-    #         output += part
-    #     else:
-    #         id = part[2:-1]
-    #         if part.startswith("<@&"): # Role
-    #             id = id[1:]
-    #             pass
-    #         elif part.startswith("<@"): # User
-    #             output += "@ " + client.get_user(id).display_name
-    #         elif part.startswith("<#"): # Channel
-    #             output += "# " + client.get_channel(id).name
+    output = ping_regex.sub("@ ", output)
+    output = channel_regex.sub("# ", output)
     return owo.add_affixes(output)
 
 @client.event
@@ -54,7 +42,7 @@ async def on_message(message):
 
     if message_content.startswith(tuple(owo_strings)):
         messages = await channel.history(limit=2).flatten()
-        p_message = messages[1].content
+        p_message = messages[1].clean_content
         await channel.send(parse_message(p_message))
 
     elif "twagedy" in message_content:
