@@ -11,6 +11,9 @@ TOKEN = secrets.token
 #def deleteMessage(id):
 #     pass
 
+async def change_status(status):
+    await client.change_presence(activity=discord.Game(status))
+
 async def remove_phrase(id, num, phrase):
     channel = await client.fetch_channel(id)
     print("got channel ", channel)
