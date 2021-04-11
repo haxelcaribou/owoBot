@@ -14,6 +14,9 @@ url_regex = re.compile(r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-
 ping_regex = re.compile(r"@&?(?=\S)")
 channel_regex = re.compile(r"#(?=\S)")
 
+status = "apt package manager"
+
+
 def parse_message(message):
     output = ""
     parts = url_regex.split(message)
@@ -29,6 +32,7 @@ def parse_message(message):
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    await client.change_presence(activity=discord.Game(status))
 
 
 @client.event
