@@ -10,7 +10,8 @@ TOKEN = secrets.token
 
 owo_strings = ("owo", "uwu", "^w^", "0w0", "vwv")
 
-url_regex = re.compile(r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)")
+url_regex = re.compile(
+    r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)")
 ping_regex = re.compile(r"@&?(?=\S)")
 channel_regex = re.compile(r"#(?=\S)")
 
@@ -28,6 +29,7 @@ def parse_message(message):
     output = ping_regex.sub("@ ", output)
     output = channel_regex.sub("# ", output)
     return owo.add_affixes(output)
+
 
 @client.event
 async def on_ready():
@@ -61,5 +63,14 @@ async def on_message(message):
     elif "twagedy" in message_content:
         await channel.send(owo.owo("Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It's not a story the Jedi would tell you. It's a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself."))
 
+
+@client.event
+async def on_reaction_add(reaction, user):
+    message = reaction.message
+    if message.author != client.user:
+        return
+
+    if str(reaction.emoji) == "🔇":
+        await message.delete()
 
 client.run(TOKEN)
