@@ -33,11 +33,10 @@ async def dm(id, message):
 
 
 
-# TODO: Figure out how to cleanly end
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    sys.exit(0)
+    await client.close()
 
 
 client.run(TOKEN)
