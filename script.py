@@ -46,7 +46,7 @@ async def on_message(message):
 
     message_content = message.clean_content.lower()
 
-    if message_content.startswith(tuple(owo_strings)) and message_content[-1:] != "~":
+    if message_content.startswith(tuple(owo_strings)) and message_content[-1:] != "¬":
         messages = await channel.history(limit=2).flatten()
         p_message = messages[1].clean_content
         await channel.send(parse_message(p_message))
