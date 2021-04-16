@@ -2,17 +2,19 @@
 
 import discord
 import secrets
-import sys
+import owo
 
 client = discord.Client()
 TOKEN = secrets.token
 
 #
-#def deleteMessage(id):
+# def deleteMessage(id):
 #     pass
+
 
 async def change_status(status):
     await client.change_presence(activity=discord.Game(status))
+
 
 async def remove_phrase(id, num, phrase):
     channel = await client.fetch_channel(id)
@@ -31,6 +33,23 @@ async def dm(id, message):
         dmChannel = await user.create_dm()
         await dmChannel.send(message)
 
+
+async def send_file(id, file, message=""):
+    channel = await client.fetch_channel(id)
+    print("got channel ", channel)
+    await channel.send(message, file=file)
+
+
+async def send_message(id, message):
+    channel = await client.fetch_channel(id)
+    print("got channel ", channel)
+    await channel.send(message)
+
+
+async def send_link(id, embed, message=""):
+    channel = await client.fetch_channel(id)
+    print("got channel ", channel)
+    await channel.send(message, embed=embed)
 
 
 @client.event
