@@ -46,7 +46,7 @@ async def send_message(id, message):
     await channel.send(message)
 
 
-async def send_link(id, embed, message=""):
+async def send_embed(id, embed, message=""):
     channel = await client.fetch_channel(id)
     print("got channel ", channel)
     await channel.send(message, embed=embed)
