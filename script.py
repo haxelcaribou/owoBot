@@ -48,9 +48,9 @@ async def on_message(message):
 
     if message_content.startswith(tuple(owo_strings)):
         async for p_message in channel.history(limit=10):
-            p_message = p_message.clean_content
-            if p_message[-1:] != "¬" and not url_regex.fullmatch(p_message) and len(p_message) > 1:
-                await channel.send(parse_message(p_message))
+            p_message_content = p_message.clean_content
+            if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
+                await channel.send(parse_message(p_message_content))
                 return
 
     elif message_content == "moo":
