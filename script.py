@@ -47,22 +47,28 @@ async def on_message(message):
     message_content = message.clean_content.lower()
 
     if message_content.startswith(tuple(owo_strings)):
-        messages = await channel.history(limit=2).flatten()
-        p_message = messages[1].clean_content
-        if p_message[-1:] != "¬":
-            await channel.send(parse_message(p_message))
+        async for p_message in channel.history(limit=10):
+            p_message = p_message.clean_content
+            if p_message[-1:] != "¬" and not url_regex.fullmatch(p_message) and len(p_message) > 1:
+                await channel.send(parse_message(p_message))
+                return
 
     elif message_content == "moo":
         await channel.send(owo.substitute("I'm not a cow, shut up."))
+        return
     elif message_content == "moo -v":
         await channel.send(owo.substitute("I already told you I'm not a cow."))
+        return
     elif message_content.startswith("moo -vv"):
         await channel.send(owo.substitute("Please Stop"))
+        return
     elif message_content == "sudo moo":
         await channel.send(owo.substitute("Moo"))
+        return
 
     elif "twagedy" in message_content:
         await channel.send(owo.owo("Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It's not a story the Jedi would tell you. It's a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself."))
+        return
 
 
 @client.event
