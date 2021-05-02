@@ -14,6 +14,7 @@ url_regex = re.compile(
     r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)")
 ping_regex = re.compile(r"@&?(?=\S)")
 channel_regex = re.compile(r"#(?=\S)")
+num_regex = re.compile(r"[1-4]?[0-9]")
 
 status = "apt package manager"
 
@@ -47,11 +48,21 @@ async def on_message(message):
     message_content = message.clean_content.lower()
 
     if message_content.startswith(tuple(owo_strings)):
-        async for p_message in channel.history(limit=10):
+        num_input = num_regex.search(message_content[4:])
+        if num_input:
+            num = int(num_input.group(0))
+            p_messages = await channel.history(limit=num + 1).flatten()
+            p_message = p_messages[num]
             p_message_content = p_message.clean_content
             if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                 await channel.send(parse_message(p_message_content))
                 return
+        else:
+            async for p_message in channel.history(limit=10):
+                p_message_content = p_message.clean_content
+                if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
+                    await channel.send(parse_message(p_message_content))
+                    return
 
     elif message_content == "moo":
         await channel.send(owo.substitute("I'm not a cow, shut up."))
