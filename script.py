@@ -4,6 +4,7 @@ import discord
 import owo
 import secrets
 import re
+import random
 
 client = discord.Client()
 TOKEN = secrets.token
@@ -14,6 +15,8 @@ url_regex = re.compile(
     r"(https?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)")
 ping_regex = re.compile(r"@&?(?=\S)")
 channel_regex = re.compile(r"#(?=\S)")
+emote_regex = re.compile(r"( )?:\w+:(?(1)| )?")
+empty_regex = re.compile(r"\s*")
 num_regex = re.compile(r"[1-4]?[0-9]")
 
 status = "apt package manager"
@@ -29,6 +32,10 @@ def parse_message(message):
             output += owo.substitute(parts[i])
     output = ping_regex.sub("@ ", output)
     output = channel_regex.sub("# ", output)
+    output = emote_regex.sub("", output)
+    output = output.replace("||||", "")
+    if empty_regex.fullmatch(output):
+        return random.choice(owo.PREFIXES)
     return owo.add_affixes(output)
 
 
@@ -54,13 +61,13 @@ async def on_message(message):
             p_messages = await channel.history(limit=num + 1).flatten()
             p_message = p_messages[num]
             p_message_content = p_message.clean_content
-            if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
+            if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not emote_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                 await channel.send(parse_message(p_message_content))
                 return
         else:
             async for p_message in channel.history(limit=10):
                 p_message_content = p_message.clean_content
-                if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
+                if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not emote_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                     await channel.send(parse_message(p_message_content))
                     return
 
