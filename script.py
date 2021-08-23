@@ -16,7 +16,7 @@ url_regex = re.compile(
 ping_regex = re.compile(r"@&?(?=\S)")
 channel_regex = re.compile(r"#(?=\S)")
 emote_regex = re.compile(r"( )?:\w+:(?(1)| )?")
-id_regex = re.compile(r" ?<:\w+:a?\d{18}> ?")
+id_regex = re.compile(r" ?<a?:\w+:\d{18}> ?")
 empty_regex = re.compile(r"\s*")
 num_regex = re.compile(r"[1-4]?[0-9]")
 
