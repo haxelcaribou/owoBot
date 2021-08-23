@@ -16,6 +16,7 @@ url_regex = re.compile(
 ping_regex = re.compile(r"@&?(?=\S)")
 channel_regex = re.compile(r"#(?=\S)")
 emote_regex = re.compile(r"( )?:\w+:(?(1)| )?")
+id_regex = re.compile(r" ?<:\w+:a?\d{18}> ?")
 empty_regex = re.compile(r"\s*")
 num_regex = re.compile(r"[1-4]?[0-9]")
 
@@ -61,13 +62,14 @@ async def on_message(message):
             p_messages = await channel.history(limit=num + 1).flatten()
             p_message = p_messages[num]
             p_message_content = p_message.clean_content
-            if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not emote_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
+            if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not id_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                 await channel.send(parse_message(p_message_content))
                 return
         else:
             async for p_message in channel.history(limit=10):
                 p_message_content = p_message.clean_content
-                if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not emote_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
+                print(p_message_content)
+                if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not id_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                     await channel.send(parse_message(p_message_content))
                     return
 
