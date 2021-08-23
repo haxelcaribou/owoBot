@@ -65,6 +65,7 @@ async def on_message(message):
             if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not id_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                 await channel.send(parse_message(p_message_content))
                 return
+            channel.send(random.choice(owo.PREFIXES))
         else:
             async for p_message in channel.history(limit=25):
                 p_message_content = p_message.clean_content
@@ -72,6 +73,7 @@ async def on_message(message):
                 if p_message.author != client.user and p_message_content[-1:] != "¬" and not url_regex.fullmatch(p_message_content) and not id_regex.fullmatch(p_message_content) and len(p_message_content) > 1 and not p_message_content.startswith(tuple(owo_strings)):
                     await channel.send(parse_message(p_message_content))
                     return
+            channel.send(random.choice(owo.PREFIXES))
 
     elif message_content == "moo":
         await channel.send(owo.substitute("I'm not a cow, shut up."))
