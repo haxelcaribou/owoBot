@@ -20,7 +20,7 @@ id_regex = re.compile(r"( ?<a?:\w+:\d{18}> ?)+")
 empty_regex = re.compile(r"\s*")
 num_regex = re.compile(r"[1-4]?[0-9]")
 
-status = "Arch Linux"
+status = "*Nuzzles U*"
 
 
 def parse_message(message):
